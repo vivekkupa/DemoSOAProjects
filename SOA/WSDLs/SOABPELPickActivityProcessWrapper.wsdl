@@ -1,0 +1,16 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="SOABPELPickActivityProcess"
+     targetNamespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="PickActivityDemoProcess">
+        <plnk:role name="calculatorPort" portType="client:calculatorPort"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+         location="SOABPELPickActivityProcess.wsdl"/>
+</wsdl:definitions>

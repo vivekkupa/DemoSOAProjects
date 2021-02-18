@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+        targetNamespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="processInput">
+    <complexType>
+      <sequence>
+        <element name="number1" type="integer"/>
+        <element name="number2" type="integer"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="processResponse">
+    <complexType>
+      <sequence>
+        <element name="result" type="integer"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="processFaultResponce">
+    <complexType>
+      <sequence>
+        <element name="error" type="string"/>
+      </sequence>
+    </complexType>
+  </element>
+</schema>

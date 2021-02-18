@@ -1,0 +1,143 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sun Jul 10 16:43:17 IST 2016
+  Author:  vipin.i.kumar
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="PickActivityDemoProcess"
+               targetNamespace="http://www.learnsoafromexterperts.sg/SOADemoPickActivityApps/SOADemoPickActivityProj/PickActivityDemoProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://www.learnsoafromexterperts.sg/SOADemoPickActivityApps/SOADemoPickActivityProj/PickActivityDemoProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+          location="../WSDLs/SOABPELPickActivityProcessWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+          ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="pickactivitydemoprocess_client" partnerLinkType="ns1:PickActivityDemoProcess" myRole="calculatorPort"/>
+    <partnerLink name="pickactivitydemoprocess_client_ep" partnerLinkType="ns1:PickActivityDemoProcess"
+                 myRole="calculatorPort"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:PickActivityAdditionMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:pickActivityAdditionResponce"/>
+    <variable name="additionOperationsInputVariable" messageType="ns1:PickActivityAdditionMessage"/>
+    <variable name="substractionOperationInputVariable" messageType="ns1:PickActivitySubstractionMessage"/>
+    <variable name="multiplicationOperationInputVariable" messageType="ns1:PickActivityMultipicationMessage"/>
+    <variable name="additionOperationsOutputVariable" messageType="ns1:pickActivityAdditionResponce"/>
+    <variable name="substractionOperationOutputVariable" messageType="ns1:pickActivitySubstractionResponce"/>
+    <variable name="multiplicationOperationOutputVariable" messageType="ns1:pickActivityMultiplicationResponce"/>
+    <variable name="Receive1_additionOperations_InputVariable" messageType="ns1:PickActivityAdditionMessage"/>
+    <variable name="Receive1_additionOperations_InputVariable_1" messageType="ns1:PickActivityAdditionMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in PickActivityDemoProcess.wsdl) -->
+    <pick name="PickCalculator" createInstance="yes">
+      <onMessage variable="additionOperationsInputVariable" partnerLink="pickactivitydemoprocess_client"
+                 portType="ns1:calculatorPort" operation="additionOperations">
+        <sequence name="SequenceAddition">
+          <scope name="AdditionScope">
+            <sequence name="SequenceAddition">
+              <assign name="AssignAddition">
+                <copy>
+                  <from>$additionOperationsInputVariable.payload/ns1:number1 + $additionOperationsInputVariable.payload/ns1:number2</from>
+                  <to>$additionOperationsOutputVariable.additionResponce/ns1:result</to>
+                </copy>
+              </assign>
+              <reply name="ReplyAddition" variable="additionOperationsOutputVariable"
+                     partnerLink="pickactivitydemoprocess_client" portType="ns1:calculatorPort"
+                     operation="additionOperations"/>
+            </sequence>
+          </scope>
+        </sequence>
+      </onMessage>
+      <onMessage variable="substractionOperationInputVariable" partnerLink="pickactivitydemoprocess_client"
+                 portType="ns1:calculatorPort" operation="substractionOperation">
+        <sequence name="SequenceSubstract">
+          <scope name="SubstractScope">
+            <sequence name="SequenceSubstraction">
+              <assign name="AssignSubstract">
+                <copy>
+                  <from>$substractionOperationInputVariable.substractionInput/ns1:number1 - $substractionOperationInputVariable.substractionInput/ns1:number2</from>
+                  <to>$substractionOperationOutputVariable.substractionResponce/ns1:result</to>
+                </copy>
+              </assign>
+              <reply name="ReplySubstraction" variable="substractionOperationOutputVariable"
+                     partnerLink="pickactivitydemoprocess_client" portType="ns1:calculatorPort"
+                     operation="substractionOperation"/>
+            </sequence>
+          </scope>
+        </sequence>
+      </onMessage>
+      <onMessage variable="multiplicationOperationInputVariable" partnerLink="pickactivitydemoprocess_client"
+                 portType="ns1:calculatorPort" operation="multiplicationOperation">
+         <sequence name="SequenceMultiply">
+          <scope name="MultiplyScope">
+            <sequence name="SequenceMultiplication">
+              <assign name="AssignMultiply">
+                <copy>
+                  <from>$multiplicationOperationInputVariable.multiplicationPart/ns1:number1 * $multiplicationOperationInputVariable.multiplicationPart/ns1:number2</from>
+                  <to>$multiplicationOperationOutputVariable.multiplicationReponce/ns1:result</to>
+                </copy>
+              </assign>
+              <reply name="ReplyMultiplication" variable="multiplicationOperationOutputVariable"
+                     partnerLink="pickactivitydemoprocess_client" portType="ns1:calculatorPort"
+                     operation="multiplicationOperation"/>
+            </sequence>
+          </scope>
+        </sequence>
+      </onMessage>
+    </pick>
+    <!-- Generate reply to synchronous request -->
+    <receive name="Receive1" partnerLink="pickactivitydemoprocess_client_ep" portType="ns1:calculatorPort"
+             operation="additionOperations" variable="Receive1_additionOperations_InputVariable_1"/>
+  </sequence>
+</process>

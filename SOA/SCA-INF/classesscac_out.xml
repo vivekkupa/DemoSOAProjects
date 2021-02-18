@@ -1,0 +1,23 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Faults>
+   <Fault>
+      <severity>warning</severity>
+      <loc>/ns:composite/ns:component[@name='PickActivityDemoProcess/pickactivitydemoprocess_client']</loc>
+      <line/>
+      <col/>
+      <file>D:\Vivek\Trainings\Oracle\po\solutions\SOADemoPickActivityApps\SOADemoPickActivityApps\SOADemoPickActivityProj\SOA\composite.xml</file>
+      <name>D:\Vivek\Trainings\Oracle\po\solutions\SOADemoPickActivityApps\SOADemoPickActivityApps\SOADemoPickActivityProj\SOA\composite.xml</name>
+      <fix/>
+      <msg>The service "pickactivitydemoprocess_client" exposed by component "PickActivityDemoProcess" is not wired to/used by any other component.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc>/*[namespace-uri()='http://docs.oasis-open.org/wsbpel/2.0/process/executable'][local-name()='process']</loc>
+      <line>29</line>
+      <col/>
+      <file>BPEL/PickActivityDemoProcess.bpel</file>
+      <name>BPEL/PickActivityDemoProcess.bpel</name>
+      <fix>Fix the process to be *either* durable or synchronous.</fix>
+      <msg>Process "PickActivityDemoProcess" is both durable (onMessage,Receive,Wait) and synchronous.</msg>
+   </Fault>
+</Faults>

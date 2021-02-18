@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SOABPELPickActivityProcess"
+             targetNamespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	TYPE DEFINITION - List of services participating in this BPEL process
+	The default output of the BPEL designer uses strings as input and 
+	output to the BPEL Process. But you can define or import any XML 
+	Schema type and use them as part of the message types.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->   
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.learnsoafromExperts.com/SOADemoPickActivityApps/SOADemoPickActivityProj/SOABPELPickActivityProcess" schemaLocation="../Schemas/SOABPELPickActivityProcess.xsd" />
+		</schema>
+	</wsdl:types>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	MESSAGE TYPE DEFINITION - Definition of the message types used as 
+	part of the port type defintions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->      
+	<wsdl:message name="PickActivityAdditionMessage">
+		<wsdl:part name="payload" element="client:processInput"/>
+	</wsdl:message>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	PORT TYPE DEFINITION - A port type groups a set of operations into
+	a logical service unit.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- portType implemented by the SOABPELPickActivityProcess BPEL process -->
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	PARTNER LINK TYPE DEFINITION
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	<plnk:partnerLinkType name="SOABPELPickActivityProcess">
+		<plnk:role name="SOABPELPickActivityProcessProvider" portType="client:SOABPELPickActivityProcess"/>
+	</plnk:partnerLinkType>
+ <wsdl:message name="soaProcessFault">
+  <wsdl:part name="processFault" element="client:processFaultResponce"/>
+ </wsdl:message>
+ <wsdl:message name="PickActivitySubstractionMessage">
+  <wsdl:part name="substractionInput" element="client:processInput"/>
+ </wsdl:message>
+ <wsdl:message name="PickActivityMultipicationMessage">
+  <wsdl:part name="multiplicationPart" element="client:processInput"/>
+ </wsdl:message>
+ <wsdl:message name="pickActivityAdditionResponce">
+  <wsdl:part name="additionResponce" element="client:processResponse"/>
+ </wsdl:message>
+ <wsdl:message name="pickActivitySubstractionResponce">
+  <wsdl:part name="substractionResponce" element="client:processResponse"/>
+ </wsdl:message>
+ <wsdl:message name="pickActivityMultiplicationResponce">
+  <wsdl:part name="multiplicationReponce" element="client:processResponse"/>
+ </wsdl:message>
+ <wsdl:portType name="calculatorPort">
+  <wsdl:operation name="additionOperations">
+   <wsdl:input message="client:PickActivityAdditionMessage"/>
+   <wsdl:output message="client:pickActivityAdditionResponce"/>
+   <wsdl:fault message="client:PickActivityAdditionMessage" name="processFault"/>
+  </wsdl:operation>
+  <wsdl:operation name="substractionOperation">
+   <wsdl:input message="client:PickActivitySubstractionMessage"/>
+   <wsdl:output message="client:pickActivitySubstractionResponce"/>
+   <wsdl:fault message="client:soaProcessFault" name="processResponce"/>
+  </wsdl:operation>
+  <wsdl:operation name="multiplicationOperation">
+   <wsdl:input message="client:PickActivityMultipicationMessage"/>
+   <wsdl:output message="client:pickActivityMultiplicationResponce"/>
+   <wsdl:fault message="client:soaProcessFault" name="processFault"/>
+  </wsdl:operation>
+ </wsdl:portType>
+</wsdl:definitions>
